@@ -68,24 +68,223 @@ One note before you delve into your tasks: for each endpoint you are expected to
 
 REVIEW_COMMENT
 ```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
-
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
-
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+- Returns: An object with a three keys, categories, that contains a object of id: category_string key:value pairs. a key called total_categories that returns the total number of categories, and a success key
+{
+  "categories": [
+    {
+      "id": 1,
+      "type": "Science"
+    },
+    {
+      "id": 2,
+      "type": "Art"
+    },
+    {
+      "id": 3,
+      "type": "Geography"
+    },
+    {
+      "id": 4,
+      "type": "History"
+    },
+    {
+      "id": 5,
+      "type": "Entertainment"
+    }
+  ],
+  "success": "true",
+  "total_categories": 6
+}
+
+
+GET '/questions'
+- Fetches a dictionary of questions in which the keys are the questions, categories, current_category, total_questions, and success
+- Request Arguments: page number as a url argument, if left blank page 1 will be returned
+- Returns: An object with a five keys, categories, that contains a object of id: category_string key:value pairs. questions, that contains a object of key:value pairs, keys are shown below. a key called total_questions that returns the total number of questions, a key that's called current_category that retuns null, and a success key
+{
+  "categories": [
+    {
+      "id": 1,
+      "type": "Science"
+    },
+    {
+      "id": 2,
+      "type": "Art"
+    },
+    {
+      "id": 3,
+      "type": "Geography"
+    },
+    {
+      "id": 4,
+      "type": "History"
+    },
+    {
+      "id": 5,
+      "type": "Entertainment"
+    },
+    {
+      "id": 6,
+      "type": "Sports"
+    }
+  ],
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "total_questions": 19
+}
+
+POST '/questions/search'
+- Fetches a dictionary of questions in which the keys are the questions, current_category, total_questions, and success and where all the question are relative to a submitted search term
+- Request Arguments: searchTerm : a string containing the word or words that the user desire to search about
+- Returns: An object with a 4 keys, questions, that contains a object of key:value pairs, keys are shown below. a key called total_questions that returns the total number of questions, a key that's called current_category that retuns null, and a success key
+{
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    }
+  ],
+  "success": true,
+  "total_questions": 1
+}
+
+DELETE '/questions/{question_id}'
+- Removes a question completely (persist to db) 
+- Request Arguments: question_id : the id of the question to be deleted
+- Returns: An object with a 2 keys, deleted, and its value is the id of the now deleted question, and a success key
+{
+  "deleted": 2,
+  "success": true
+}
+
+POST '/questions'
+- Adds a question to the app (persist to db) 
+- Request Arguments: question : question string, answer : answer string, difficulty : an integer reprsenting the question's difficulty, category : the id of the category this question belongs to
+- Returns: An object with a 2 keys, created_with_id, and its value is the id of the now created question, and a success key
+{
+  "created_with_id": 24,
+  "success": true
+}
+
+GET '/categories/<int:category_id>/questions'
+- Fetches a dictionary of questions that belongs to the same category in which the keys are the questions, current_category, total_questions, and success
+- Request Arguments: page number as a url argument, if left blank page 1 will be returned
+- Returns: An object with a four keys, questions, that contains a object of key:value pairs, keys are shown below. a key called total_questions that returns the total number of questions, a key that's called current_category that retuns the name of the category returned, and a success key
+{
+  "current_category": "Sports", 
+  "questions": [
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 2
+}
+
+POST '/quiztown'
+- Fetches the next question of a quiz in which the keys are question and success
+- Request Arguments: previous_questions : a list of the previously presented question.. empty on first call, quiz_category: in which category is the quiz.. if the quiz has no specific category place 0 as the category id
+- Returns: An object with a two keys, question, which contains the next question of the quiz, and a success key. 
+{
+  "question": {
+    "answer": "Agra",
+    "category": 3,
+    "difficulty": 2,
+    "id": 15,
+    "question": "The Taj Mahal is located in which Indian city?"
+  },
+  "success": true
+}
 
 ```
 
